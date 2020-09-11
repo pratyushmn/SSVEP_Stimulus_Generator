@@ -1,0 +1,92 @@
+<html>
+	<head>
+		<!-- Author: Pratyush Menon -->
+		<style type="text/css">
+			body {
+				padding: 1%;
+				width:100%;
+				height:100%;
+			}
+
+			#d {
+				padding-top: 10%; 
+				padding-bottom: 10%;
+  				position: relative;
+        		margin: auto; 
+				display:flex;
+			}
+
+			p { 
+				font-size: 7rem;
+        		margin: auto; 
+        		text-align: center; 
+				font-family:'Source Code Pro', monospace;
+      		}
+
+			.NiceFont {
+				font-family:'Helvetica';
+				color: #FFFFFF;
+				font-size: 1rem;
+			}
+
+			.dark {
+				background-color: #000000 !important;
+			}
+		</style>
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+	</head>
+	
+	<body class="dark">
+		<section class="container-fluid mb-5">
+				<form class="NiceFont" onsubmit = "return false">
+					<div class="row align-items-center my-2 mt-3"><span class = "col-md-2">First Color: </span><input type="text" id="FirstColor" value="#BB0" class="col-auto mx-md-0 mx-3"><br></div>
+					<div class="row align-items-center my-2"><span class = "col-md-2">Second Color: </span><input type="text" id="SecondColor" value="#00B" class="col-auto mx-md-0 mx-3"><br></div>
+					<div class="row align-items-center my-2 mb-2"><span class = "col-md-2">Frequency: </span><input type="number" id="Frequency" value="15" class="col-auto mx-md-0 mx-3"><br></div>
+					<div class="row align-items-center"><span class = "col-auto"><input type="submit" value="Submit" class="btn btn-success"></span></div>
+				</form>
+		</section>
+
+		<span id="d" class="my-5 mx-3">
+			<p id="text"></p>
+		</span>
+
+		<script type="text/javascript">
+			var corpus = (() => { return `The combination of these issues later resulted in the bankruptcy of the company, and the majority of them were perpetuated by the indirect knowledge or direct actions of Lay, Jeffrey Skilling, Andrew Fastow, and other executives such as Rebecca Mark. Lay served as the chairman of the company in its last few years, and approved of the actions of Skilling and Fastow, although he did not always inquire about the details. Skilling constantly focused on meeting Wall Street expectations, advocated the use of mark-to-market accounting (accounting based on market value, which was then inflated) and pressured Enron executives to find new ways to hide its debt. Fastow and other executives "created off-balance-sheet vehicles, complex financing structures, and deals so bewildering that few people could understand them."[11]:132–133.`})();
+			
+			const length = 2;
+			var frequency = 10;
+			const init = performance.now();
+			var colors = ['#BB0', '#00B'];
+			let last = init;
+			let k = 0;
+
+			var form = document.querySelector("form");
+			
+			form.addEventListener("submit", function() {
+				colors[0] = document.getElementById("FirstColor").value;
+				colors[1] = document.getElementById("SecondColor").value;
+				frequency = document.getElementById("Frequency").value;
+			});
+
+			var text = document.getElementById('text');
+			
+			var d = document.getElementById('d');
+			
+			console.log(Date.now());
+			window.requestAnimationFrame(function tick() {
+				const next = performance.now();
+				if((next - init) % (1000 / frequency) < (last - init) % (1000 / frequency)) {
+					k++;		
+
+					d.style.backgroundColor = colors[k % colors.length];
+					d.style.color = colors[(k + 1) % colors.length];
+					text.innerHTML = corpus.slice(parseInt(k / 1), parseInt(k / 1) + length);
+				}
+				last = next;
+				window.requestAnimationFrame(tick);
+			});
+		</script>
+	</body>
+</html>
